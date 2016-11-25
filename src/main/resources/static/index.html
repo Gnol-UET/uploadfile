@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- JQuery import -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+  <script src="jquery.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+</head>
+
+<body style="background-color: black">
+
+  <!-- Upload file form -->
+  <div class="container">
+    <div class="col-sm-12">
+      <form id="upload-file-form">
+        <label for="upload-file-input" class="custom-file-upload" style="color: white">
+          <img src="1.png" class="img-responsive center-block">
+        </label>
+        <input id="upload-file-input" type="file" name="uploadfile" accept="image/png, image/jpg, image/jpeg"/>
+        <span id="upload-file-message" style="color: orange; font-size: 30px"></span>
+      </form>
+    </div>
+
+  </div>
+
+
+  
+  <!-- Javascript functions -->
+  <script>
+  
+    // bind the on-change event for the input element (triggered when a file
+    // is chosen)
+    $(document).ready(function() {
+      $("#upload-file-input").on("change", uploadFile);
+    });
+    
+    /**
+     * Upload the file sending it via Ajax at the Spring Boot server.
+     */
+    function uploadFile() {
+      $.ajax({
+        url: "/uploadFile",
+        type: "POST",
+        data: new FormData($("#upload-file-form")[0]),
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function () {
+          // Handle upload success
+          $("#upload-file-message").text("File succesfully uploaded");
+        },
+        error: function () {
+          // Handle upload error
+          $("#upload-file-message").text(
+              "File not uploaded (perhaps it's too much big)");
+        }
+      });
+    } // function uploadFile
+  </script>
+  
+</body>
+
+</html>
